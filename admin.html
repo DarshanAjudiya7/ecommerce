@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Product Management</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #fffaf2; /* हल्का orange white background */
+    }
+    h2 {
+      text-align: center;
+      color: #ff6600; /* orange heading */
+    }
+    .form-container {
+      background: #ffffff;
+      padding: 20px;
+      margin: 20px auto;
+      border-radius: 10px;
+      width: 400px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      border: 2px solid #ff6600;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background: #ff6600; /* orange button */
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #e65c00; /* darker orange */
+    }
+    .product-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 30px;
+      justify-content: center;
+    }
+    .product-card {
+      background: #ffffff;
+      border: 2px solid #ff6600;
+      border-radius: 10px;
+      width: 220px;
+      text-align: center;
+      padding: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    .product-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid #ff6600;
+    }
+    .remove-btn {
+      background: #ff6600;
+      color: white;
+      border: none;
+      padding: 8px;
+      margin-top: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .remove-btn:hover {
+      background: #e65c00;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>🛒 Admin - Product Management</h2>
+
+  <div class="form-container">
+    <h3 style="color:#ff6600;">Add New Product</h3>
+    <input type="text" id="productName" placeholder="Enter product name" required>
+    <input type="number" id="productPrice" placeholder="Enter product price" required>
+    <input type="file" id="productImage" accept="image/*" required>
+    <button onclick="addProduct()">Add Product</button>
+  </div>
+
+  <h3 style="text-align:center; color:#ff6600;">Product List</h3>
+  <div class="product-list" id="productList">
+    <!-- Products will be shown here -->
+  </div>
+
+  <script>
+    function addProduct() {
+      const name = document.getElementById("productName").value;
+      const price = document.getElementById("productPrice").value;
+      const imageInput = document.getElementById("productImage");
+      const productList = document.getElementById("productList");
+
+      if (name === "" || price === "" || imageInput.files.length === 0) {
+        alert("Please fill all fields!");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const productCard = document.createElement("div");
+        productCard.classList.add("product-card");
+        productCard.innerHTML = `
+          <img src="${e.target.result}" alt="${name}">
+          <h4 style="color:#ff6600;">${name}</h4>
+          <p style="font-weight:bold;">₹${price}</p>
+          <button class="remove-btn" onclick="removeProduct(this)">Remove</button>
+        `;
+        productList.appendChild(productCard);
+      };
+      reader.readAsDataURL(imageInput.files[0]);
+
+      // reset form
+      document.getElementById("productName").value = "";
+      document.getElementById("productPrice").value = "";
+      document.getElementById("productImage").value = "";
+    }
+
+    function removeProduct(button) {
+      const productCard = button.parentElement;
+      productCard.remove();
+    }
+  </script>
+
+</body>
+</html>

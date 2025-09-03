@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container mt-5">
+  <div class="row">
+    <!-- CART -->
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-header">My Cart</div>
+        <div class="card-body" id="cart-body">
+          <!-- PRODUCT 1 -->
+          <div class="row product-row">
+            <div class="col-md-4">
+              <img src="Images/men.jpg" class="img-fluid" height="150">
+            </div>
+            <div class="col-md-8">
+              <p class="item-name">Pink Saree</p>
+              <p>Price: ₹ <span class="price">390</span></p>
+              <p><a href="javascript:void(0)" class="remove-btn" style="font-weight:700">REMOVE</a></p>
+            </div>
+          </div>
+          <hr>
+          <!-- PRODUCT 2 -->
+          <div class="row product-row">
+            <div class="col-md-4">
+              <img src="Images/girl.jpg" class="img-fluid" height="150">
+            </div>
+            <div class="col-md-8">
+              <p class="item-name">Traditional Dress</p>
+              <p>Price: ₹ <span class="price">490</span></p>
+              <p><a href="javascript:void(0)" class="remove-btn" style="font-weight:700">REMOVE</a></p>
+            </div>
+          </div>
+          <hr>
+          <!-- PRODUCT 3 -->
+          <div class="row product-row">
+            <div class="col-md-4">
+              <img src="Images/background-image-1.jpg" class="img-fluid" height="150">
+            </div>
+            <div class="col-md-8">
+              <p class="item-name">Black Design Saree</p>
+              <p>Price: ₹ <span class="price">580</span></p>
+              <p><a href="javascript:void(0)" class="remove-btn" style="font-weight:700">REMOVE</a></p>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer text-right">
+          <button id="place-order" class="btn btn-success">Place Order</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRICE DETAILS -->
+    <div class="col-lg-4 mt-3 mt-lg-0">
+      <div class="card">
+        <div class="card-header">PRICE DETAILS</div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col">Price (<span id="item-count">3</span>) :</div>
+            <div class="col text-right">₹ <span id="total-price">1460</span></div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col"><b>Total Amount :</b></div>
+            <div class="col text-right"><b>₹ <span id="total-price-final">1460</span></b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAYMENT OPTIONS MODAL -->
+<div class="modal fade" id="paymentModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Select Payment Option</h5>
+        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <p>Total Amount: ₹ <span id="modal-total"></span></p>
+        <div class="list-group">
+          <a href="javascript:void(0)" class="list-group-item list-group-item-action pay-option" data-method="UPI">💳 Pay with UPI</a>
+          <a href="javascript:void(0)" class="list-group-item list-group-item-action pay-option" data-method="COD">📦 Cash on Delivery</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COD CONFIRMATION MODAL -->
+<div class="modal fade" id="codModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title">Cash on Delivery - Confirm Order</h5>
+        <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <p><b>Name:</b> <span id="cod-name"></span></p>
+        <p><b>Address:</b> <span id="cod-address"></span></p>
+        <hr>
+        <h6>Products:</h6>
+        <ul id="cod-products"></ul>
+        <div class="d-flex justify-content-between">
+          <span>Products Total:</span>
+          <span>₹ <span id="cod-products-total"></span></span>
+        </div>
+        <div class="d-flex justify-content-between">
+          <span>Delivery Charges:</span>
+          <span>₹ <span id="cod-delivery-charge"></span></span>
+        </div>
+        <hr>
+        <div class="d-flex justify-content-between">
+          <b>Final Total:</b>
+          <b>₹ <span id="cod-final-total"></span></b>
+        </div>
+        <button id="confirm-cod-btn" class="btn btn-success btn-block mt-3">Confirm Order</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- UPI MODAL -->
+<div class="modal fade" id="upiModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">UPI Payment - Order Summary</h5>
+        <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <p><b>Name:</b> <span id="upi-name"></span></p>
+        <p><b>Address:</b> <span id="upi-address"></span></p>
+        <hr>
+        <h6>Products:</h6>
+        <ul id="upi-products"></ul>
+        <p><b>Total Amount:</b> ₹ <span id="upi-total"></span></p>
+        <div class="form-group">
+          <label for="upi-id">Enter UPI ID</label>
+          <input type="text" class="form-control" id="upi-id" placeholder="example@upi">
+        </div>
+        <button id="pay-upi-btn" class="btn btn-primary btn-block">Pay Now</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const DELIVERY_CHARGE = 50;
+
+function updateCart() {
+  let total = 0;
+  let count = 0;
+  $(".product-row").each(function() {
+    let price = parseInt($(this).find(".price").text());
+    total += price;
+    count++;
+  });
+  $("#item-count").text(count);
+  $("#total-price").text(total);
+  $("#total-price-final").text(total);
+}
+
+// Remove item
+$(document).on("click", ".remove-btn", function() {
+  $(this).closest(".product-row").remove();
+  updateCart();
+});
+
+// Place Order
+$("#place-order").on("click", function() {
+  if ($(".product-row").length === 0) {
+    alert("Your cart is empty!");
+  } else {
+    $("#modal-total").text($("#total-price-final").text());
+    $("#paymentModal").modal("show");
+  }
+});
+
+// Payment selection
+$(document).on("click", ".pay-option", function() {
+  let method = $(this).data("method");
+  $("#paymentModal").modal("hide");
+
+  let userName = "Samir Ajudiya";
+  let userAddress ="KumKum park-2, Block No-15, Pushkardham main road, Rajkot, Gujarat - 360005";
+
+  if (method === "COD") {
+    $("#cod-name").text(userName);
+    $("#cod-address").text(userAddress);
+
+    let productsTotal = 0;
+    $("#cod-products").empty();
+    $(".product-row").each(function() {
+      let name = $(this).find(".item-name").text();
+      let price = parseInt($(this).find(".price").text());
+      productsTotal += price;
+      $("#cod-products").append(`<li>${name} - ₹${price}</li>`);
+    });
+
+    $("#cod-products-total").text(productsTotal);
+    $("#cod-delivery-charge").text(DELIVERY_CHARGE);
+    $("#cod-final-total").text(productsTotal + DELIVERY_CHARGE);
+
+    $("#codModal").modal("show");
+  } else if (method === "UPI") {
+    $("#upi-name").text(userName);
+    $("#upi-address").text(userAddress);
+
+    $("#upi-products").empty();
+    $(".product-row").each(function() {
+      let name = $(this).find(".item-name").text();
+      let price = $(this).find(".price").text();
+      $("#upi-products").append(`<li>${name} - ₹${price}</li>`);
+    });
+
+    $("#upi-total").text($("#total-price-final").text());
+    $("#upiModal").modal("show");
+  }
+});
+
+// Confirm COD
+$("#confirm-cod-btn").on("click", function() {
+  $("#codModal").modal("hide");
+  alert("Cash on Delivery order placed successfully!");
+});
+
+// Pay with UPI with robust validation
+$("#pay-upi-btn").on("click", function() {
+  let upiId = $("#upi-id").val().trim();
+
+  // UPI validation regex: allows samir@upi, user.name@bank, user123@okicici etc.
+  let upiPattern = /^[\w.-]+@[\w]{2,}$/;
+
+  if (!upiPattern.test(upiId)) {
+    alert("UPI ID not valid! Enter a valid UPI (e.g., samir@upi)");
+    return;
+  }
+  alert("Payment of ₹" + $("#upi-total").text() + " initiated via UPI ID: " + upiId);
+  $("#upiModal").modal("hide");
+});
+
+$(document).ready(function() {
+  updateCart();
+});
+</script>
+
+</body>
+</html>
